@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<title>Materi Pembelajaran | E-Learning TJKT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f4f8;
+    color: #111827;
+  }
+
+  /* Layout */
+  .app-container {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar - tema biru */
+  .sidebar {
+    width: 280px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-top {
+    flex: 1;
+  }
+
+  .sidebar-header {
+    padding: 28px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 24px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sidebar-header i {
+    color: #2563eb;
+    font-size: 1.3rem;
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    padding: 0 16px;
+    margin-bottom: 32px;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 4px;
+  }
+
+  .sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #6b7280;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+
+  .sidebar-nav li a i {
+    width: 20px;
+    font-size: 1rem;
+  }
+
+  .sidebar-nav li a:hover {
+    background: #eff6ff;
+    color: #2563eb;
+  }
+
+  .sidebar-nav li.active a {
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+  }
+
+  /* User Section in Sidebar */
+  .sidebar-user {
+    padding: 20px 24px 28px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: auto;
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .user-avatar {
+    width: 44px;
+    height: 44px;
+    background: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .user-info-sidebar {
+    flex: 1;
+  }
+
+  .user-info-sidebar .user-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #111827;
+    margin-bottom: 2px;
+  }
+
+  .user-info-sidebar .user-role {
+    font-size: 0.7rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .logout-btn-sidebar {
+    width: 100%;
+    background: none;
+    border: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #dc2626;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #fff;
+  }
+
+  .logout-btn-sidebar:hover {
+    background: #fef2f2;
+    border-color: #dc2626;
+    color: #b91c1c;
+  }
+
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 32px 40px;
+  }
+
+  /* Header Area */
+  .page-header {
+    margin-bottom: 28px;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+  }
+
+  .page-header p {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+
+  /* Filter Section */
+  .filter-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+
+  .filter-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #374151;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .filter-select {
+    width: 100%;
+    max-width: 360px;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    background: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    color: #111827;
+    transition: all 0.2s;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  /* Progress Card */
+  .progress-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px 24px;
+    margin-bottom: 28px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .progress-title {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+
+  .progress-percent {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #2563eb;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  /* Materi Card */
+  .materi-card {
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 28px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .materi-header {
+    padding: 20px 24px;
+    background: #fafcfc;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .materi-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .materi-header h2 i {
+    color: #2563eb;
+    font-size: 1.1rem;
+  }
+
+  .materi-desc {
+    color: #6b7280;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Accordion */
+  .accordion-item {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .accordion-header:hover {
+    background: #fafbfc;
+  }
+
+  .accordion-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #111827;
+    flex: 1;
+  }
+
+  .accordion-title i {
+    color: #2563eb;
+    font-size: 0.9rem;
+  }
+
+  .accordion-icon {
+    color: #9ca3af;
+    transition: transform 0.2s;
+    font-size: 0.8rem;
+  }
+
+  .accordion-icon.rotate {
+    transform: rotate(180deg);
+  }
+
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 24px;
+  }
+
+  .accordion-content.active {
+    max-height: 2000px;
+    padding: 0 24px 20px 24px;
+  }
+
+  /* Task Button */
+  .task-btn {
+    background: #f3f4f6;
+    border: none;
+    border-radius: 10px;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #4b5563;
+  }
+
+  .task-btn.completed {
+    background: #2563eb;
+    color: white;
+  }
+
+  .task-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Sub Description */
+  .sub-description {
+    background: #eff6ff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin: 12px 0 16px;
+    font-size: 0.85rem;
+    color: #1e40af;
+    border-left: 3px solid #2563eb;
+  }
+
+  /* Link Groups */
+  .link-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .link-category {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+
+  .category-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #fafbfc;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #6b7280;
+  }
+
+  .category-title i {
+    font-size: 0.85rem;
+  }
+
+  .link-item {
+    padding: 10px 16px;
+    margin: 4px 8px;
+    background: #fafbfc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .link-item a {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #111827;
+    flex: 1;
+  }
+
+  .link-item:hover {
+    background: #f3f4f6;
+  }
+
+  .quiz-item {
+    cursor: pointer;
+    background: #eff6ff;
+    border-left: 3px solid #2563eb;
+  }
+
+  .quiz-score-badge {
+    background: #2563eb;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 24px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .empty-text {
+    padding: 12px 16px;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    color: #d1d5db;
+    margin-bottom: 16px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.1rem;
+    color: #374151;
+    margin-bottom: 8px;
+  }
+
+  .empty-state p {
+    font-size: 0.85rem;
+    color: #9ca3af;
+  }
+
+  /* Loading */
+  .loading-state {
+    text-align: center;
+    padding: 60px;
+  }
+
+  .spinner {
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #2563eb;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Toast */
+  .toast-message {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #111827;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Mobile Menu Toggle */
+  .mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: white;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 200;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 150;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 60px 16px 24px 16px;
+    }
+    .overlay.active {
+      display: block;
+    }
+    .filter-select {
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" id="menuToggleBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-header">
+        <h2><i class="fas fa-graduation-cap"></i> E-Learning TJKT</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboardsiswa.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li class="active"><a href="materi.html"><i class="fas fa-book-open"></i> Materi</a></li>
+        <li><a href="tugaspjj.html"><i class="fas fa-tasks"></i> Tugas PJJ</a></li>
+      </ul>
+    </div>
+
+    <!-- User & Logout Section -->
+    <div class="sidebar-user">
+      <div class="user-profile">
+        <div class="user-avatar" id="avatarInitial">S</div>
+        <div class="user-info-sidebar">
+          <div class="user-name" id="sidebarNama">Siswa TJKT</div>
+          <div class="user-role">Siswa Aktif</div>
+        </div>
+      </div>
+      <button class="logout-btn-sidebar" id="logoutBtnSidebar">
+        <i class="fas fa-sign-out-alt"></i> Keluar
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="page-header">
+      <h1>Perpustakaan Materi</h1>
+      <p>Pilih topik materi dan pelajari sesuai kurikulum</p>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-section">
+      <label class="filter-label">
+        <i class="fas fa-layer-group"></i> Pilih Topik Materi
+      </label>
+      <select id="filterMateri" class="filter-select">
+        <option value="" disabled selected>-- Pilih Materi --</option>
+      </select>
+    </div>
+
+    <!-- Progress -->
+    <div id="globalProgressContainer" class="progress-card" style="display: none;">
+      <div class="progress-header">
+        <span class="progress-title">
+          <i class="fas fa-chalkboard-user"></i> Progress Belajar
+        </span>
+        <span id="progressPercent" class="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div id="globalFillBar" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loadingState" class="loading-state" style="display: none;">
+      <div class="spinner"></div>
+      <p>Memuat materi...</p>
+    </div>
+
+    <!-- Materi Content -->
+    <div id="materiContent"></div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 40px; padding: 20px; color: #9ca3af; font-size: 0.7rem;">
+      <p>© 2024 E-Learning TJKT | Semua materi telah disesuaikan dengan kurikulum</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyXlu8fV6GkovhAkwfaYri1zXKwWu0G__6tAImqw5vNIL6zNbXR0L8wIc5y0dINNL1g/exec';
+
+  let allMateriRaw = [];       
+  let uniqueJudulList = [];
+  let currentFilterJudul = "";
+  const PROGRESS_KEY = 'tjkt_siswa_completed_sub_v2';
+  const QUIZ_SCORES_KEY = 'tjkt_siswa_quiz_scores';
+
+  // Mobile Menu
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuToggle = document.getElementById('menuToggleBtn');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  }
+
+  if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  function getCompletedSet() {
+    const stored = localStorage.getItem(PROGRESS_KEY);
+    if(!stored) return new Set();
+    try {
+      const arr = JSON.parse(stored);
+      return new Set(arr);
+    } catch(e) { return new Set(); }
+  }
+  
+  function saveCompletedSet(set) {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(Array.from(set)));
+  }
+  
+  function getQuizScore(subUniqueId) {
+    const scores = localStorage.getItem(QUIZ_SCORES_KEY);
+    if(!scores) return null;
+    try {
+      const scoreData = JSON.parse(scores);
+      return scoreData[subUniqueId] || null;
+    } catch(e) { return null; }
+  }
+  
+  function getSubUniqueId(materiId, subIndex) {
+    return `m_${materiId}_sub_${subIndex}`;
+  }
+  
+  function toggleSubComplete(materiId, subIndex, isCompletedNow) {
+    const completed = getCompletedSet();
+    const uid = getSubUniqueId(materiId, subIndex);
+    if(isCompletedNow) completed.add(uid);
+    else completed.delete(uid);
+    saveCompletedSet(completed);
+    applyCurrentFilterAndRender();
+    updateGlobalProgressDisplay();
+    showToast(isCompletedNow ? "Sub-materi selesai" : "Sub-materi dibatalkan");
+  }
+
+  function computeGlobalProgress(materiDataArray) {
+    let totalSub = 0, completedSub = 0;
+    const completedSet = getCompletedSet();
+    for(let materi of materiDataArray) {
+      if(materi.sub_materi && Array.isArray(materi.sub_materi)) {
+        for(let idx = 0; idx < materi.sub_materi.length; idx++) {
+          totalSub++;
+          const uid = getSubUniqueId(materi.id_materi, idx);
+          if(completedSet.has(uid)) completedSub++;
+        }
+      }
+    }
+    return { totalSub, completedSub };
+  }
+
+  function updateGlobalProgressDisplay() {
+    if(!currentFilterJudul) {
+      document.getElementById('globalProgressContainer').style.display = 'none';
+      return;
+    }
+    let dataSource = allMateriRaw.filter(m => m.judul_materi === currentFilterJudul);
+    const { totalSub, completedSub } = computeGlobalProgress(dataSource);
+    const container = document.getElementById('globalProgressContainer');
+    if(totalSub === 0) {
+      container.style.display = 'none';
+      return;
+    }
+    container.style.display = 'block';
+    const percent = totalSub === 0 ? 0 : Math.round((completedSub / totalSub) * 100);
+    document.getElementById('globalFillBar').style.width = `${percent}%`;
+    document.getElementById('progressPercent').innerHTML = `${percent}% (${completedSub}/${totalSub} sub)`;
+  }
+
+  function bukaSoal(subMateriId, subNama, materiJudul, materiId, subIndex) {
+    const params = new URLSearchParams();
+    params.set('sub_id', subMateriId);
+    params.set('sub_name', subNama);
+    params.set('materi_judul', materiJudul);
+    params.set('materi_id', materiId);
+    params.set('sub_index', subIndex);
+    params.set('from', 'materi');
+    params.set('timestamp', Date.now());
+    
+    const targetUrl = `soal.html?${params.toString()}`;
+    window.open(targetUrl, '_blank');
+    showToast(`Membuka latihan: ${subNama}`);
+  }
+
+  function renderQuizStatus(subUniqueId, subNama, subId, materiJudul, materiId, subIndex) {
+    const quizScore = getQuizScore(subUniqueId);
+    
+    if(quizScore) {
+      const percentage = Math.round((quizScore.score / quizScore.totalQuestions) * 100);
+      let gradeClass = '#2563eb';
+      if(percentage >= 85) gradeClass = '#2563eb';
+      else if(percentage >= 70) gradeClass = '#e67e22';
+      else if(percentage >= 60) gradeClass = '#e67e22';
+      else gradeClass = '#dc2626';
+      
+      return `
+        <div class="link-item quiz-item" onclick="bukaSoal('${escapeHtml(subId)}', '${escapeHtml(subNama)}', '${escapeHtml(materiJudul)}', '${escapeHtml(materiId)}', ${subIndex})">
+          <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+            <i class="fas fa-question-circle" style="color: #2563eb;"></i>
+            <span style="font-weight: 500; font-size: 0.85rem;">Kerjakan Soal</span>
+          </div>
+          <div class="quiz-score-badge" style="background: ${gradeClass};">
+            Nilai: ${percentage}%
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="link-item quiz-item" onclick="bukaSoal('${escapeHtml(subId)}', '${escapeHtml(subNama)}', '${escapeHtml(materiJudul)}', '${escapeHtml(materiId)}', ${subIndex})">
+          <i class="fas fa-question-circle" style="color: #2563eb;"></i>
+          <span style="font-weight: 500; font-size: 0.85rem;">Kerjakan Soal</span>
+          <i class="fas fa-arrow-right" style="margin-left: auto; font-size: 0.7rem;"></i>
+        </div>
+      `;
+    }
+  }
+
+  function renderLinksFromDatabase(sub, materiJudul, materiId, subIndex) {
+    const links = sub.links || [];
+    const subUniqueId = getSubUniqueId(materiId, subIndex);
+    const subId = sub.id_sub || `sub_${materiId}_${subIndex}`;
+    const subNama = sub.nama_sub || 'Latihan Soal';
+    
+    const pptLinks = links.filter(l => l.tipe === 'ppt');
+    const videoLinks = links.filter(l => l.tipe === 'video');
+    
+    const renderCategory = (items, icon, title, emptyMsg) => {
+      if(items.length > 0) {
+        let itemsHtml = '';
+        items.forEach((link) => {
+          let linkTitle = link.judul || (title === 'PPT' ? 'Buka Presentasi' : 'Buka Materi');
+          let urlSafe = link.url || '#';
+          itemsHtml += `
+            <div class="link-item">
+              <i class="${icon}" style="font-size: 0.8rem;"></i>
+              <a href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener noreferrer">
+                ${escapeHtml(linkTitle)}
+              </a>
+            </div>`;
+        });
+        return `<div class="link-category"><div class="category-title"><i class="${icon}"></i> ${title}</div>${itemsHtml}</div>`;
+      }
+      return `<div class="link-category"><div class="category-title"><i class="${icon}"></i> ${title}</div><div class="empty-text">${emptyMsg}</div></div>`;
+    };
+    
+    return `<div class="link-group">
+      ${renderCategory(pptLinks, 'fas fa-file-powerpoint', 'Presentasi', 'Belum ada presentasi')}
+      ${renderCategory(videoLinks, 'fas fa-video', 'Video Pembelajaran', 'Belum ada video')}
+      <div class="link-category">
+        <div class="category-title"><i class="fas fa-question-circle"></i> Latihan Soal</div>
+        ${renderQuizStatus(subUniqueId, subNama, subId, materiJudul, materiId, subIndex)}
+      </div>
+    </div>`;
+  }
+
+  function renderMateriList(materiData) {
+    if(!materiData || materiData.length === 0 || !currentFilterJudul) {
+      document.getElementById('materiContent').innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-folder-open"></i>
+          <h3>Belum ada materi dipilih</h3>
+          <p>Silakan pilih topik materi dari dropdown di atas</p>
+        </div>`;
+      updateGlobalProgressDisplay();
+      return;
+    }
+
+    let html = '';
+    const completedSet = getCompletedSet();
+
+    for(let materi of materiData) {
+      html += `<div class="materi-card">
+        <div class="materi-header">
+          <h2><i class="fas fa-folder"></i> ${escapeHtml(materi.judul_materi)}</h2>
+          <div class="materi-desc">${escapeHtml(materi.deskripsi_materi || 'Deskripsi umum materi ini')}</div>
+        </div>`;
+      
+      if(materi.sub_materi && materi.sub_materi.length > 0) {
+        materi.sub_materi.forEach((sub, idx) => {
+          const subId = getSubUniqueId(materi.id_materi, idx);
+          const isCompleted = completedSet.has(subId);
+          const btnIcon = isCompleted ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
+          const btnText = isCompleted ? 'Selesai' : 'Tandai Selesai';
+          const btnClass = isCompleted ? 'task-btn completed' : 'task-btn';
+          
+          html += `
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="accordion-title">
+                  <i class="fas fa-file-alt"></i> ${escapeHtml(sub.nama_sub || 'Sub Materi')}
+                  <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <button class="${btnClass}" data-materi-id="${materi.id_materi}" data-sub-index="${idx}" onclick="event.stopPropagation()">
+                  ${btnIcon} ${btnText}
+                </button>
+              </div>
+              <div class="accordion-content">
+                ${sub.deskripsi_sub ? `<div class="sub-description"><i class="fas fa-info-circle"></i> ${escapeHtml(sub.deskripsi_sub)}</div>` : ''}
+                ${renderLinksFromDatabase(sub, materi.judul_materi, materi.id_materi, idx)}
+              </div>
+            </div>`;
+        });
+      } else {
+        html += `<div style="padding: 40px; text-align: center; color: #9ca3af;">Belum ada sub materi untuk topik ini</div>`;
+      }
+      html += `</div>`;
+    }
+    document.getElementById('materiContent').innerHTML = html;
+    updateGlobalProgressDisplay();
+
+    document.querySelectorAll('.task-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const materiId = btn.getAttribute('data-materi-id');
+        const subIdx = parseInt(btn.getAttribute('data-sub-index'));
+        if(materiId && !isNaN(subIdx)) {
+          const completedSetNow = getCompletedSet();
+          const uid = getSubUniqueId(materiId, subIdx);
+          const newState = !completedSetNow.has(uid);
+          toggleSubComplete(materiId, subIdx, newState);
+        }
+      });
+    });
+  }
+
+  window.toggleAccordion = function(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('.accordion-icon');
+    content.classList.toggle('active');
+    if (icon) icon.classList.toggle('rotate');
+  };
+
+  window.bukaSoal = bukaSoal;
+
+  function applyCurrentFilterAndRender() {
+    if (!currentFilterJudul) {
+      renderMateriList([]);
+      return;
+    }
+    let dataToRender = allMateriRaw.filter(m => m.judul_materi === currentFilterJudul);
+    renderMateriList(dataToRender);
+  }
+
+  function populateJudulFilter() {
+    const judulSet = new Set();
+    allMateriRaw.forEach(m => { if(m.judul_materi) judulSet.add(m.judul_materi); });
+    uniqueJudulList = Array.from(judulSet).sort();
+    const select = document.getElementById('filterMateri');
+    select.innerHTML = '<option value="" disabled selected>-- Pilih Materi --</option>';
+    uniqueJudulList.forEach(judul => {
+      const opt = document.createElement('option');
+      opt.value = judul;
+      opt.textContent = judul;
+      select.appendChild(opt);
+    });
+  }
+
+  async function loadAllMateri() {
+    const loadingDiv = document.getElementById('loadingState');
+    const materiDiv = document.getElementById('materiContent');
+    loadingDiv.style.display = 'block';
+    materiDiv.innerHTML = '';
+    try {
+      const response = await fetch(`${API_URL}?action=getAllMateri`);
+      const result = await response.json();
+      
+      if(result.status === 'success' && Array.isArray(result.data)) {
+        allMateriRaw = result.data;
+        populateJudulFilter();
+        renderMateriList([]);
+      } else {
+        throw new Error('Data tidak sesuai atau kosong');
+      }
+    } catch(err) {
+      console.error('Error:', err);
+      materiDiv.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Gagal Memuat</h3><p>${err.message}</p><button onclick="location.reload()" style="margin-top:16px; background:#2563eb; padding:8px 20px; border:none; border-radius:8px; color:white; cursor:pointer;">Muat Ulang</button></div>`;
+    } finally {
+      loadingDiv.style.display = 'none';
+    }
+  }
+
+  function showToast(msg) {
+    let toast = document.querySelector('.toast-message');
+    if(toast) toast.remove();
+    const div = document.createElement('div');
+    div.className = 'toast-message';
+    div.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 2000);
+  }
+
+  function escapeHtml(str) {
+    if(!str) return '';
+    return String(str).replace(/[&<>]/g, function(m) {
+      if(m === '&') return '&amp;';
+      if(m === '<') return '&lt;';
+      if(m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // Logout handler
+  document.getElementById('logoutBtnSidebar').addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = "../index.html";
+  });
+  
+  const nama = localStorage.getItem('nama');
+  const role = localStorage.getItem('role');
+  if(role !== 'siswa') {
+    alert('Akses terbatas untuk siswa!');
+    window.location.href = "../index.html";
+  } else {
+    const displayName = nama || 'Siswa TJKT';
+    document.getElementById('sidebarNama').innerHTML = displayName;
+    document.getElementById('avatarInitial').innerHTML = displayName.charAt(0).toUpperCase();
+  }
+
+  document.getElementById('filterMateri').addEventListener('change', (e) => {
+    currentFilterJudul = e.target.value;
+    applyCurrentFilterAndRender();
+  });
+
+  loadAllMateri();
+</script>
+</body>
+</html>
