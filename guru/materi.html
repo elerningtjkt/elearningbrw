@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<title>Kelola Materi | Guru E-Learning TJKT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f4f8;
+    color: #111827;
+    overflow-x: hidden;
+  }
+
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --primary-light: #eff6ff;
+    --white: #ffffff;
+    --black: #111827;
+    --gray-50: #f8fafc;
+    --gray-100: #f0f4f8;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #dc2626;
+    --error-light: #fef2f2;
+    --border-radius-sm: 12px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 20px;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition-fast: 0.2s ease;
+  }
+
+  .app-container {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    background: var(--white);
+    border-right: 1px solid var(--gray-200);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-header {
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 24px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sidebar-header i {
+    color: var(--primary);
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    padding: 0 16px;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 4px;
+  }
+
+  .sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--gray-500);
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .sidebar-nav li a:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .sidebar-nav li.active a {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .sidebar-user {
+    padding: 20px 24px 28px;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    background: var(--gray-50);
+    padding: 12px;
+    border-radius: var(--border-radius-md);
+  }
+
+  .user-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+  }
+
+  .user-info-sidebar .user-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .logout-btn-sidebar {
+    width: 100%;
+    background: none;
+    border: 1px solid var(--gray-200);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    color: var(--error);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 32px 40px;
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .page-header p {
+    color: var(--gray-500);
+  }
+
+  /* Stats Row */
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .stat-badge {
+    background: var(--white);
+    padding: 12px 24px;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .stat-badge i {
+    font-size: 1.5rem;
+    color: var(--primary);
+  }
+
+  .stat-badge .stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  .stat-badge .stat-label {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+  }
+
+  /* Materi Grid - CLEAN CARD GRID */
+  .materi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+  }
+
+  .materi-card {
+    background: var(--white);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .materi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+  }
+
+  .card-header {
+    padding: 20px;
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .card-title h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+
+  .card-title p {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-size: 0.8rem;
+  }
+
+  .icon-btn.edit { color: var(--primary); }
+  .icon-btn.edit:hover { background: var(--primary-light); }
+  .icon-btn.delete { color: var(--error); }
+  .icon-btn.delete:hover { background: var(--error-light); }
+
+  .card-stats {
+    padding: 12px 20px;
+    background: var(--gray-50);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .sub-materi-list {
+    padding: 8px 0;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .sub-item-card {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gray-100);
+    transition: var(--transition-fast);
+  }
+
+  .sub-item-card:hover {
+    background: var(--gray-50);
+  }
+
+  .sub-info-card {
+    flex: 1;
+  }
+
+  .sub-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sub-name i {
+    color: var(--primary);
+    font-size: 0.7rem;
+  }
+
+  .sub-links-count {
+    font-size: 0.65rem;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
+
+  .add-sub-btn-sm {
+    background: var(--primary-light);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 20px;
+    color: var(--primary);
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .card-footer {
+    padding: 12px 20px;
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .btn-add-sub {
+    width: 100%;
+    background: none;
+    border: 1px dashed var(--primary);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    color: var(--primary);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition-fast);
+  }
+
+  .btn-add-sub:hover {
+    background: var(--primary-light);
+  }
+
+  /* Floating Action Button */
+  .fab {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 56px;
+    height: 56px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    transition: all var(--transition-fast);
+    z-index: 90;
+  }
+
+  .fab:hover {
+    transform: scale(1.1);
+    background: var(--primary-dark);
+  }
+
+  /* Modal Modern */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--white);
+    border-radius: 24px;
+    max-width: 550px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .modal-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--gray-400);
+  }
+
+  .modal-body {
+    padding: 24px 28px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    color: var(--gray-700);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .link-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+  }
+
+  .link-row select {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+  }
+
+  .link-row input {
+    flex: 1;
+  }
+
+  .btn-add-link {
+    background: var(--primary-light);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: var(--primary);
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  .btn-remove-link {
+    background: var(--error-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--error);
+    cursor: pointer;
+  }
+
+  .modal-footer {
+    padding: 20px 28px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-secondary {
+    background: var(--gray-100);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px;
+    color: var(--gray-400);
+  }
+
+  .toast-message {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--black);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    z-index: 1000;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: white;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 200;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 150;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 60px 16px 24px 16px;
+    }
+    .overlay.active {
+      display: block;
+    }
+    .materi-grid {
+      grid-template-columns: 1fr;
+    }
+    .fab {
+      bottom: 80px;
+      right: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <button class="mobile-menu-toggle" id="menuToggleBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="sidebar" id="sidebar">
+    <div>
+      <div class="sidebar-header">
+        <h2><i class="fas fa-graduation-cap"></i> E-Learning TJKT</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboardguru.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li class="active"><a href="materi.html"><i class="fas fa-book-open"></i> Kelola Materi</a></li>
+        <li><a href="monitoringsiswa.html"><i class="fas fa-eye"></i> Monitoring</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-profile">
+        <div class="user-avatar" id="avatarInitial">G</div>
+        <div class="user-info-sidebar">
+          <div class="user-name" id="sidebarNama">Guru TJKT</div>
+          <div class="user-role" style="font-size:0.7rem; color:var(--gray-500);">Pengajar</div>
+        </div>
+      </div>
+      <button class="logout-btn-sidebar" id="logoutBtnSidebar">
+        <i class="fas fa-sign-out-alt"></i> Keluar
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="page-header">
+      <h1>📚 Kelola Materi</h1>
+      <p>Kelola semua materi pembelajaran dalam satu tempat</p>
+    </div>
+
+    <div id="statsContainer"></div>
+    <div id="materiGridContainer">
+      <div class="empty-state">
+        <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+        <p>Memuat data materi...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="fab" onclick="openMateriModal()">
+    <i class="fas fa-plus"></i>
+  </div>
+</div>
+
+<!-- Modal Materi -->
+<div class="modal" id="materiModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalMateriTitle"><i class="fas fa-folder"></i> Tambah Materi Baru</h3>
+      <button class="modal-close" onclick="closeMateriModal()">&times;</button>
+    </div>
+    <form id="materiForm">
+      <div class="modal-body">
+        <input type="hidden" id="editMateriId">
+        <div class="form-group">
+          <label>📌 Judul Materi</label>
+          <input type="text" id="materiJudul" placeholder="Contoh: Pemrograman Web" required>
+        </div>
+        <div class="form-group">
+          <label>📝 Deskripsi</label>
+          <textarea id="materiDeskripsi" rows="3" placeholder="Deskripsi singkat tentang materi ini..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeMateriModal()">Batal</button>
+        <button type="submit" class="btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Sub Materi -->
+<div class="modal" id="subMateriModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalSubTitle"><i class="fas fa-layer-group"></i> Sub Materi</h3>
+      <button class="modal-close" onclick="closeSubMateriModal()">&times;</button>
+    </div>
+    <form id="subMateriForm">
+      <div class="modal-body">
+        <input type="hidden" id="parentMateriId">
+        <input type="hidden" id="editSubIndex">
+        <div class="form-group">
+          <label>📄 Nama Sub Materi</label>
+          <input type="text" id="subNama" placeholder="Contoh: Pengenalan HTML" required>
+        </div>
+        <div class="form-group">
+          <label>📋 Deskripsi</label>
+          <textarea id="subDeskripsi" rows="2" placeholder="Deskripsi sub materi..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>🔗 Link Materi</label>
+          <div id="linksContainer"></div>
+          <button type="button" class="btn-add-link" onclick="addLinkField()">
+            <i class="fas fa-plus"></i> Tambah Link
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeSubMateriModal()">Batal</button>
+        <button type="submit" class="btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyXlu8fV6GkovhAkwfaYri1zXKwWu0G__6tAImqw5vNIL6zNbXR0L8wIc5y0dINNL1g/exec';
+  
+  let materiData = [];
+  let currentLinks = [];
+
+  // Mobile menu
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuToggle = document.getElementById('menuToggleBtn');
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+  if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  async function fetchAllMateri() {
+    try {
+      const response = await fetch(`${API_URL}?action=getAllMateri`);
+      const result = await response.json();
+      if (result.status === 'success' && Array.isArray(result.data)) {
+        materiData = result.data;
+        return materiData;
+      }
+      return [];
+    } catch (e) {
+      console.error('Error:', e);
+      return [];
+    }
+  }
+
+  function renderStats() {
+    const totalMateri = materiData.length;
+    const totalSub = materiData.reduce((sum, m) => sum + (m.sub_materi?.length || 0), 0);
+    const totalLinks = materiData.reduce((sum, m) => sum + (m.sub_materi?.reduce((s, sub) => s + (sub.links?.length || 0), 0) || 0), 0);
+    
+    document.getElementById('statsContainer').innerHTML = `
+      <div class="stats-row">
+        <div class="stat-badge"><i class="fas fa-book"></i><div><div class="stat-number">${totalMateri}</div><div class="stat-label">Materi</div></div></div>
+        <div class="stat-badge"><i class="fas fa-layer-group"></i><div><div class="stat-number">${totalSub}</div><div class="stat-label">Sub Materi</div></div></div>
+        <div class="stat-badge"><i class="fas fa-link"></i><div><div class="stat-number">${totalLinks}</div><div class="stat-label">Link</div></div></div>
+      </div>
+    `;
+  }
+
+  function renderMateriGrid() {
+    const container = document.getElementById('materiGridContainer');
+    
+    if (!materiData || materiData.length === 0) {
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open" style="font-size: 3rem;"></i><h3>Belum Ada Materi</h3><p>Klik tombol + untuk menambahkan materi</p></div>`;
+      return;
+    }
+    
+    let html = '<div class="materi-grid">';
+    for (let i = 0; i < materiData.length; i++) {
+      const materi = materiData[i];
+      const subCount = materi.sub_materi?.length || 0;
+      const completedSub = materi.sub_materi?.filter(s => s.completed === true).length || 0;
+      
+      html += `
+        <div class="materi-card">
+          <div class="card-header">
+            <div class="card-title">
+              <h3>${escapeHtml(materi.judul_materi)}</h3>
+              <p>${escapeHtml(materi.deskripsi_materi?.substring(0, 60) || 'Tidak ada deskripsi')}</p>
+            </div>
+            <div class="card-actions">
+              <button class="icon-btn edit" onclick="editMateri(${i})"><i class="fas fa-edit"></i></button>
+              <button class="icon-btn delete" onclick="deleteMateri(${i})"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="card-stats">
+            <span><i class="fas fa-layer-group"></i> ${subCount} Sub Materi</span>
+            <span><i class="fas fa-link"></i> ${materi.sub_materi?.reduce((sum, sub) => sum + (sub.links?.length || 0), 0) || 0} Link</span>
+          </div>
+          <div class="sub-materi-list">
+      `;
+      
+      if (materi.sub_materi && materi.sub_materi.length > 0) {
+        for (let j = 0; j < materi.sub_materi.slice(0, 3).length; j++) {
+          const sub = materi.sub_materi[j];
+          html += `
+            <div class="sub-item-card">
+              <div class="sub-info-card">
+                <div class="sub-name"><i class="fas fa-file-alt"></i> ${escapeHtml(sub.nama_sub)}</div>
+                <div class="sub-links-count">${sub.links?.length || 0} link</div>
+              </div>
+              <div class="sub-actions">
+                <button class="icon-btn edit" onclick="editSubMateri(${i}, ${j})"><i class="fas fa-edit"></i></button>
+                <button class="icon-btn delete" onclick="deleteSubMateri(${i}, ${j})"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          `;
+        }
+        if (materi.sub_materi.length > 3) {
+          html += `<div style="padding: 8px 20px; font-size:0.7rem; color:var(--gray-400); text-align:center;">+${materi.sub_materi.length - 3} sub materi lainnya</div>`;
+        }
+      } else {
+        html += `<div style="padding: 24px; text-align:center; color:var(--gray-400); font-size:0.8rem;">Belum ada sub materi</div>`;
+      }
+      
+      html += `
+          </div>
+          <div class="card-footer">
+            <button class="btn-add-sub" onclick="openSubMateriModal(${i})">
+              <i class="fas fa-plus"></i> Tambah Sub Materi
+            </button>
+          </div>
+        </div>
+      `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // Materi CRUD
+  function openMateriModal(editIndex = null) {
+    const modal = document.getElementById('materiModal');
+    const title = document.getElementById('modalMateriTitle');
+    if (editIndex !== null && materiData[editIndex]) {
+      title.innerHTML = '<i class="fas fa-edit"></i> Edit Materi';
+      document.getElementById('editMateriId').value = editIndex;
+      document.getElementById('materiJudul').value = materiData[editIndex].judul_materi;
+      document.getElementById('materiDeskripsi').value = materiData[editIndex].deskripsi_materi || '';
+    } else {
+      title.innerHTML = '<i class="fas fa-plus"></i> Tambah Materi Baru';
+      document.getElementById('editMateriId').value = '';
+      document.getElementById('materiJudul').value = '';
+      document.getElementById('materiDeskripsi').value = '';
+    }
+    modal.classList.add('active');
+  }
+  
+  function closeMateriModal() {
+    document.getElementById('materiModal').classList.remove('active');
+  }
+  
+  function editMateri(index) {
+    openMateriModal(index);
+  }
+  
+  function deleteMateri(index) {
+    if (confirm(`Hapus materi "${materiData[index].judul_materi}"?`)) {
+      materiData.splice(index, 1);
+      renderStats();
+      renderMateriGrid();
+      showToast('Materi dihapus');
+    }
+  }
+  
+  // Sub Materi CRUD
+  function openSubMateriModal(parentIndex, subIndex = null) {
+    const modal = document.getElementById('subMateriModal');
+    const title = document.getElementById('modalSubTitle');
+    document.getElementById('parentMateriId').value = parentIndex;
+    currentLinks = [];
+    
+    if (subIndex !== null && materiData[parentIndex]?.sub_materi?.[subIndex]) {
+      const sub = materiData[parentIndex].sub_materi[subIndex];
+      title.innerHTML = '<i class="fas fa-edit"></i> Edit Sub Materi';
+      document.getElementById('editSubIndex').value = subIndex;
+      document.getElementById('subNama').value = sub.nama_sub || '';
+      document.getElementById('subDeskripsi').value = sub.deskripsi_sub || '';
+      currentLinks = sub.links || [];
+    } else {
+      title.innerHTML = '<i class="fas fa-plus"></i> Tambah Sub Materi';
+      document.getElementById('editSubIndex').value = '';
+      document.getElementById('subNama').value = '';
+      document.getElementById('subDeskripsi').value = '';
+      currentLinks = [];
+    }
+    renderLinkFields();
+    modal.classList.add('active');
+  }
+  
+  function closeSubMateriModal() {
+    document.getElementById('subMateriModal').classList.remove('active');
+  }
+  
+  function renderLinkFields() {
+    const container = document.getElementById('linksContainer');
+    if (currentLinks.length === 0) {
+      container.innerHTML = '<div style="color: var(--gray-400); font-size:0.8rem; padding:8px;">Belum ada link</div>';
+      return;
+    }
+    let html = '';
+    currentLinks.forEach((link, idx) => {
+      html += `
+        <div class="link-row">
+          <select onchange="updateLink(${idx}, 'tipe', this.value)">
+            <option value="ppt" ${link.tipe === 'ppt' ? 'selected' : ''}>📊 PPT</option>
+            <option value="video" ${link.tipe === 'video' ? 'selected' : ''}>🎬 Video</option>
+          </select>
+          <input type="text" placeholder="Judul" value="${escapeHtml(link.judul || '')}" onchange="updateLink(${idx}, 'judul', this.value)">
+          <input type="url" placeholder="URL" value="${escapeHtml(link.url || '')}" onchange="updateLink(${idx}, 'url', this.value)">
+          <button type="button" class="btn-remove-link" onclick="removeLink(${idx})"><i class="fas fa-trash"></i></button>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+  
+  function addLinkField() {
+    currentLinks.push({ tipe: 'ppt', judul: '', url: '' });
+    renderLinkFields();
+  }
+  
+  function updateLink(index, field, value) {
+    if (currentLinks[index]) currentLinks[index][field] = value;
+  }
+  
+  function removeLink(index) {
+    currentLinks.splice(index, 1);
+    renderLinkFields();
+  }
+  
+  function editSubMateri(parentIndex, subIndex) {
+    openSubMateriModal(parentIndex, subIndex);
+  }
+  
+  function deleteSubMateri(parentIndex, subIndex) {
+    if (confirm('Hapus sub materi ini?')) {
+      materiData[parentIndex].sub_materi.splice(subIndex, 1);
+      renderStats();
+      renderMateriGrid();
+      showToast('Sub materi dihapus');
+    }
+  }
+  
+  // Form Submit
+  document.getElementById('materiForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const editId = document.getElementById('editMateriId').value;
+    const judul = document.getElementById('materiJudul').value.trim();
+    if (!judul) { showToast('Judul wajib diisi'); return; }
+    
+    if (editId !== '') {
+      const idx = parseInt(editId);
+      materiData[idx].judul_materi = judul;
+      materiData[idx].deskripsi_materi = document.getElementById('materiDeskripsi').value;
+      showToast('Materi diupdate');
+    } else {
+      materiData.push({
+        id_materi: Date.now().toString(),
+        judul_materi: judul,
+        deskripsi_materi: document.getElementById('materiDeskripsi').value,
+        sub_materi: []
+      });
+      showToast('Materi ditambahkan');
+    }
+    renderStats();
+    renderMateriGrid();
+    closeMateriModal();
+  });
+  
+  document.getElementById('subMateriForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const parentIdx = parseInt(document.getElementById('parentMateriId').value);
+    const editIdx = document.getElementById('editSubIndex').value;
+    const nama = document.getElementById('subNama').value.trim();
+    if (!nama) { showToast('Nama sub materi wajib diisi'); return; }
+    
+    const newSub = {
+      nama_sub: nama,
+      deskripsi_sub: document.getElementById('subDeskripsi').value,
+      links: currentLinks.filter(l => l.judul && l.url)
+    };
+    
+    if (!materiData[parentIdx].sub_materi) materiData[parentIdx].sub_materi = [];
+    
+    if (editIdx !== '') {
+      materiData[parentIdx].sub_materi[parseInt(editIdx)] = newSub;
+      showToast('Sub materi diupdate');
+    } else {
+      materiData[parentIdx].sub_materi.push(newSub);
+      showToast('Sub materi ditambahkan');
+    }
+    renderStats();
+    renderMateriGrid();
+    closeSubMateriModal();
+  });
+  
+  function showToast(msg) {
+    let toast = document.querySelector('.toast-message');
+    if (toast) toast.remove();
+    const div = document.createElement('div');
+    div.className = 'toast-message';
+    div.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 2000);
+  }
+  
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
+  }
+  
+  async function loadData() {
+    await fetchAllMateri();
+    renderStats();
+    renderMateriGrid();
+  }
+  
+  // Logout & Auth
+  document.getElementById('logoutBtnSidebar').addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = "../index.html";
+  });
+  
+  const nama = localStorage.getItem('nama');
+  const role = localStorage.getItem('role');
+  if (role !== 'guru') {
+    alert('Akses terbatas untuk guru!');
+    window.location.href = "../index.html";
+  } else {
+    document.getElementById('sidebarNama').innerHTML = nama || 'Guru TJKT';
+    document.getElementById('avatarInitial').innerHTML = (nama || 'G').charAt(0).toUpperCase();
+  }
+  
+  loadData();
+</script>
+</body>
+</html>

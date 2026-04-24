@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<title>Monitoring Nilai Siswa | Guru E-Learning TJKT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f4f8;
+    color: #111827;
+    overflow-x: hidden;
+  }
+
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --primary-light: #eff6ff;
+    --white: #ffffff;
+    --black: #111827;
+    --gray-50: #f8fafc;
+    --gray-100: #f0f4f8;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #dc2626;
+    --error-light: #fef2f2;
+    --border-radius-sm: 12px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 20px;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition-fast: 0.2s ease;
+  }
+
+  .app-container {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    background: var(--white);
+    border-right: 1px solid var(--gray-200);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-header {
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 24px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sidebar-header i {
+    color: var(--primary);
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    padding: 0 16px;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 4px;
+  }
+
+  .sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--gray-500);
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .sidebar-nav li a:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .sidebar-nav li.active a {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .sidebar-user {
+    padding: 20px 24px 28px;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    background: var(--gray-50);
+    padding: 12px;
+    border-radius: var(--border-radius-md);
+  }
+
+  .user-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+  }
+
+  .user-info-sidebar .user-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .logout-btn-sidebar {
+    width: 100%;
+    background: none;
+    border: 1px solid var(--gray-200);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    color: var(--error);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 32px 40px;
+  }
+
+  .page-header {
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .page-header p {
+    color: var(--gray-500);
+  }
+
+  /* Filter Section */
+  .filter-section {
+    background: var(--white);
+    border-radius: var(--border-radius-md);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--gray-200);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .filter-group {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--gray-600);
+  }
+
+  .filter-group select, .filter-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+    background: var(--white);
+  }
+
+  .filter-group select:focus, .filter-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .btn-export {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-export:hover {
+    background: #0d9488;
+  }
+
+  .btn-refresh {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Stats Summary */
+  .stats-summary {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card-sm {
+    background: var(--white);
+    border-radius: var(--border-radius-sm);
+    padding: 16px 24px;
+    border: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .stat-card-sm i {
+    font-size: 1.8rem;
+    color: var(--primary);
+  }
+
+  .stat-info .stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  .stat-info .stat-label {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+  }
+
+  /* Table Container */
+  .table-container {
+    background: var(--white);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--gray-200);
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+
+  th {
+    text-align: left;
+    padding: 16px 20px;
+    background: var(--gray-50);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    border-bottom: 1px solid var(--gray-200);
+    position: sticky;
+    top: 0;
+  }
+
+  td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 0.85rem;
+  }
+
+  tr:hover {
+    background: var(--gray-50);
+  }
+
+  /* Score Badge */
+  .score-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+
+  .score-high {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .score-medium {
+    background: #fed7aa;
+    color: #9a3412;
+  }
+
+  .score-low {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  /* Loading */
+  .loading-state {
+    text-align: center;
+    padding: 60px;
+    background: var(--white);
+    border-radius: var(--border-radius-md);
+  }
+
+  .spinner {
+    border: 3px solid var(--gray-200);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px;
+    color: var(--gray-400);
+  }
+
+  /* Toast */
+  .toast-message {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--black);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    z-index: 1000;
+  }
+
+  /* Mobile */
+  .mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: white;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 200;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 150;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 60px 16px 24px 16px;
+    }
+    .overlay.active {
+      display: block;
+    }
+    .filter-section {
+      flex-direction: column;
+    }
+    .btn-export, .btn-refresh {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <button class="mobile-menu-toggle" id="menuToggleBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="sidebar" id="sidebar">
+    <div>
+      <div class="sidebar-header">
+        <h2><i class="fas fa-graduation-cap"></i> E-Learning TJKT</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboardguru.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="materi.html"><i class="fas fa-book-open"></i> Kelola Materi</a></li>
+        <li class="active"><a href="monitoringsiswa.html"><i class="fas fa-chart-line"></i> Monitoring Nilai</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-profile">
+        <div class="user-avatar" id="avatarInitial">G</div>
+        <div class="user-info-sidebar">
+          <div class="user-name" id="sidebarNama">Guru TJKT</div>
+          <div class="user-role" style="font-size:0.7rem; color:var(--gray-500);">Pengajar</div>
+        </div>
+      </div>
+      <button class="logout-btn-sidebar" id="logoutBtnSidebar">
+        <i class="fas fa-sign-out-alt"></i> Keluar
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>📊 Monitoring Nilai Siswa</h1>
+        <p>Pantau dan analisis hasil belajar siswa per sub materi</p>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-refresh" onclick="loadNilaiData()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <button class="btn-export" onclick="exportToExcel()">
+          <i class="fas fa-file-excel"></i> Export ke Excel
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <div class="filter-group">
+        <label><i class="fas fa-filter"></i> Filter Sub Materi</label>
+        <select id="filterSubMateri" onchange="applyFilters()">
+          <option value="">Semua Sub Materi</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label><i class="fas fa-search"></i> Cari Nama Siswa</label>
+        <input type="text" id="searchNama" placeholder="Ketik nama siswa..." onkeyup="applyFilters()">
+      </div>
+      <div class="filter-group">
+        <label><i class="fas fa-chart-simple"></i> Filter Nilai</label>
+        <select id="filterScore" onchange="applyFilters()">
+          <option value="">Semua Nilai</option>
+          <option value="high">Tinggi (≥ 80)</option>
+          <option value="medium">Sedang (60-79)</option>
+          <option value="low">Rendah (< 60)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Stats Summary -->
+    <div class="stats-summary" id="statsSummary"></div>
+
+    <!-- Table Container -->
+    <div class="table-container" id="tableContainer">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Memuat data nilai siswa...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // API Configuration - Gunakan URL yang sudah disediakan
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzEghSPdSkIy7hFpkcNPgqnEhY6P4cxbAt2m7JtFHOpvyXr_8aAR1lxij46Fnewtc1g/exec';
+  
+  let nilaiData = []; // Menyimpan data nilai dari API
+  let filteredData = []; // Menyimpan data setelah filter
+  let subMateriList = []; // Daftar unik sub materi untuk filter
+
+  // Mobile Menu
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuToggle = document.getElementById('menuToggleBtn');
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+  if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  // Fetch data dari Google Sheets API
+  async function loadNilaiData() {
+    const container = document.getElementById('tableContainer');
+    container.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>Memuat data nilai...</p></div>`;
+    
+    try {
+      // Mencoba mengambil data dari API
+      const response = await fetch(`${API_URL}?action=getNilaiSiswa`);
+      const result = await response.json();
+      
+      if (result.status === 'success' && Array.isArray(result.data)) {
+        nilaiData = result.data;
+      } else {
+        // Jika API belum siap, gunakan data demo
+        console.warn('API belum siap, menggunakan data demo');
+        nilaiData = getDemoData();
+      }
+      
+      // Extract unique sub materi untuk filter
+      subMateriList = [...new Set(nilaiData.map(item => item.sub_materi).filter(Boolean))];
+      updateFilterOptions();
+      
+      // Apply filter awal
+      applyFilters();
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Gunakan data demo jika gagal fetch
+      nilaiData = getDemoData();
+      subMateriList = [...new Set(nilaiData.map(item => item.sub_materi).filter(Boolean))];
+      updateFilterOptions();
+      applyFilters();
+      showToast('Menggunakan data demo. API belum terhubung.', 3000);
+    }
+  }
+
+  // Data Demo sesuai struktur yang diminta
+  function getDemoData() {
+    return [
+      { nama: "Rafka Aditya Achmad", sub_materi: "Pengenalan TJKT", skor: 240, waktu: "13/04/2026 6:51:38" },
+      { nama: "Rafka Aditya Achmad", sub_materi: "Dasar Pemrograman", skor: 185, waktu: "12/04/2026 10:23:15" },
+      { nama: "Ahmad Fauzi", sub_materi: "Pengenalan TJKT", skor: 210, waktu: "13/04/2026 8:12:22" },
+      { nama: "Ahmad Fauzi", sub_materi: "Jaringan Dasar", skor: 195, waktu: "12/04/2026 14:30:45" },
+      { nama: "Budi Santoso", sub_materi: "Pengenalan TJKT", skor: 150, waktu: "11/04/2026 09:45:10" },
+      { nama: "Budi Santoso", sub_materi: "Dasar Pemrograman", skor: 175, waktu: "12/04/2026 11:20:33" },
+      { nama: "Citra Dewi", sub_materi: "Pengenalan TJKT", skor: 265, waktu: "13/04/2026 07:30:00" },
+      { nama: "Citra Dewi", sub_materi: "Jaringan Dasar", skor: 245, waktu: "12/04/2026 15:45:12" },
+      { nama: "Dian Permata", sub_materi: "Dasar Pemrograman", skor: 130, waktu: "10/04/2026 13:20:50" },
+      { nama: "Eka Pratama", sub_materi: "Pengenalan TJKT", skor: 200, waktu: "13/04/2026 09:00:00" },
+      { nama: "Eka Pratama", sub_materi: "Jaringan Dasar", skor: 190, waktu: "12/04/2026 10:15:25" }
+    ];
+  }
+
+  // Update dropdown filter sub materi
+  function updateFilterOptions() {
+    const select = document.getElementById('filterSubMateri');
+    select.innerHTML = '<option value="">Semua Sub Materi</option>';
+    subMateriList.sort().forEach(sub => {
+      const option = document.createElement('option');
+      option.value = sub;
+      option.textContent = sub;
+      select.appendChild(option);
+    });
+  }
+
+  // Apply semua filter
+  function applyFilters() {
+    const filterSub = document.getElementById('filterSubMateri').value;
+    const searchNama = document.getElementById('searchNama').value.toLowerCase();
+    const filterScore = document.getElementById('filterScore').value;
+    
+    filteredData = nilaiData.filter(item => {
+      // Filter sub materi
+      if (filterSub && item.sub_materi !== filterSub) return false;
+      
+      // Filter nama siswa
+      if (searchNama && !item.nama.toLowerCase().includes(searchNama)) return false;
+      
+      // Filter skor
+      if (filterScore === 'high' && item.skor < 200) return false;
+      if (filterScore === 'medium' && (item.skor < 150 || item.skor >= 200)) return false;
+      if (filterScore === 'low' && item.skor >= 150) return false;
+      
+      return true;
+    });
+    
+    renderTable();
+    renderStats();
+  }
+
+  // Render tabel nilai
+  function renderTable() {
+    const container = document.getElementById('tableContainer');
+    
+    if (filteredData.length === 0) {
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox" style="font-size: 3rem;"></i><h3>Tidak ada data</h3><p>Tidak ditemukan nilai yang sesuai dengan filter</p></div>`;
+      return;
+    }
+    
+    let html = `
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th><i class="fas fa-user"></i> Nama Siswa</th>
+            <th><i class="fas fa-book"></i> Sub Materi</th>
+            <th><i class="fas fa-star"></i> Skor/Nilai</th>
+            <th><i class="fas fa-calendar"></i> Waktu Pengerjaan</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    filteredData.forEach((item, index) => {
+      let scoreClass = '';
+      let scoreText = '';
+      
+      if (item.skor >= 200) {
+        scoreClass = 'score-high';
+        scoreText = 'Sangat Baik';
+      } else if (item.skor >= 150) {
+        scoreClass = 'score-medium';
+        scoreText = 'Cukup';
+      } else {
+        scoreClass = 'score-low';
+        scoreText = 'Perlu Bimbingan';
+      }
+      
+      html += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><strong>${escapeHtml(item.nama)}</strong></td>
+          <td>${escapeHtml(item.sub_materi)}</td>
+          <td>
+            <span class="score-badge ${scoreClass}">
+              ${item.skor} (${scoreText})
+            </span>
+          </td>
+          <td style="font-size: 0.75rem; color: var(--gray-500);">${escapeHtml(item.waktu)}</td>
+        </tr>
+      `;
+    });
+    
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  }
+
+  // Render statistik ringkasan
+  function renderStats() {
+    const totalSiswa = [...new Set(filteredData.map(item => item.nama))].length;
+    const totalSubMateri = [...new Set(filteredData.map(item => item.sub_materi))].length;
+    const rataSkor = filteredData.length > 0 
+      ? Math.round(filteredData.reduce((sum, item) => sum + item.skor, 0) / filteredData.length) 
+      : 0;
+    
+    const highScore = filteredData.filter(item => item.skor >= 200).length;
+    const highPercent = filteredData.length > 0 ? Math.round((highScore / filteredData.length) * 100) : 0;
+    
+    document.getElementById('statsSummary').innerHTML = `
+      <div class="stat-card-sm">
+        <i class="fas fa-users"></i>
+        <div class="stat-info">
+          <div class="stat-value">${totalSiswa}</div>
+          <div class="stat-label">Siswa</div>
+        </div>
+      </div>
+      <div class="stat-card-sm">
+        <i class="fas fa-layer-group"></i>
+        <div class="stat-info">
+          <div class="stat-value">${totalSubMateri}</div>
+          <div class="stat-label">Sub Materi</div>
+        </div>
+      </div>
+      <div class="stat-card-sm">
+        <i class="fas fa-chart-line"></i>
+        <div class="stat-info">
+          <div class="stat-value">${rataSkor}</div>
+          <div class="stat-label">Rata-rata Skor</div>
+        </div>
+      </div>
+      <div class="stat-card-sm">
+        <i class="fas fa-trophy"></i>
+        <div class="stat-info">
+          <div class="stat-value">${highPercent}%</div>
+          <div class="stat-label">Skor Tinggi</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Export ke Excel
+  function exportToExcel() {
+    if (filteredData.length === 0) {
+      showToast('Tidak ada data untuk diekspor', 2000);
+      return;
+    }
+    
+    // Siapkan data untuk Excel
+    const excelData = filteredData.map((item, index) => ({
+      'No': index + 1,
+      'Nama Siswa': item.nama,
+      'Sub Materi': item.sub_materi,
+      'Skor/Nilai': item.skor,
+      'Waktu Pengerjaan': item.waktu
+    }));
+    
+    // Konversi ke worksheet
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    
+    // Atur lebar kolom
+    ws['!cols'] = [
+      { wch: 5 },   // No
+      { wch: 25 },  // Nama
+      { wch: 30 },  // Sub Materi
+      { wch: 15 },  // Skor
+      { wch: 22 }   // Waktu
+    ];
+    
+    // Buat workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Nilai_Siswa');
+    
+    // Download file
+    const fileName = `Nilai_Siswa_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.xlsx`;
+    XLSX.writeFile(wb, fileName);
+    
+    showToast(`Berhasil mengeksport ${filteredData.length} data`, 2000);
+  }
+
+  // Helper functions
+  function showToast(msg, duration = 2000) {
+    let toast = document.querySelector('.toast-message');
+    if (toast) toast.remove();
+    const div = document.createElement('div');
+    div.className = 'toast-message';
+    div.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), duration);
+  }
+  
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
+  }
+  
+  // Logout
+  document.getElementById('logoutBtnSidebar').addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = "../index.html";
+  });
+  
+  // Auth check
+  const nama = localStorage.getItem('nama');
+  const role = localStorage.getItem('role');
+  if (role !== 'guru') {
+    alert('Akses terbatas untuk guru!');
+    window.location.href = "../index.html";
+  } else {
+    document.getElementById('sidebarNama').innerHTML = nama || 'Guru TJKT';
+    document.getElementById('avatarInitial').innerHTML = (nama || 'G').charAt(0).toUpperCase();
+  }
+  
+  // Load data saat halaman dimuat
+  loadNilaiData();
+</script>
+
+<!-- SheetJS Library untuk export Excel -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+</body>
+</html>
